@@ -10,8 +10,8 @@ export default function ConnexionMenuPage() {
         <div className="d-flex justify-content-center mt-5">
             {isLoginPage ? <LoginComponent/> : <RegisterComponent/>}
         </div>
-        <div className="d-flex justify-content-center mt-5">
-            <button type="button" className="btn btn-lg btn-outline-primary" onClick={() => setIsLoginPage(!isLoginPage)}>{isLoginPage ? <>Login</> : <>Register</>}</button>
+        <div className="d-flex justify-content-center">
+            <button type="button" className="btn btn-lg btn-outline-primary mt-3" onClick={() => setIsLoginPage(!isLoginPage)}>{isLoginPage ? <>Register</> : <>Login</>}</button>
         </div>
     </>
     );

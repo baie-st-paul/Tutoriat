@@ -1,0 +1,31 @@
+
+ .form_container input{
+     padding: 1.2rem 1rem;
+     width: 500px;
+     border-radius: 4px;
+     font-size: 1.2rem;
+ }
+
+ .form_container .icons {
+    position: absolute;
+ }
+
+ .form_container .icons i {
+     position: relative;
+     left: 440px;
+     top: 20px;
+ }
+
+form h1 {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
