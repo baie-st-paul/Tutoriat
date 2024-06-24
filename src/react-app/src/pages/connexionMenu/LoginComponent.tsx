@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import "./ConnexionMenuPage.css";
 
 function LoginComponent() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [icon, setIcon] = useState(faEye);
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
@@ -17,10 +18,14 @@ function LoginComponent() {
     function showPass(){
         if (showPasswRef.current.type === "password") {
             showPasswRef.current.type = "text";
+            setIcon(faEyeSlash);
         } else {
             showPasswRef.current.type = "password";
+            setIcon(faEye);
         }
     }
+
+
 
     return (
         <div className="fgroup">
@@ -34,7 +39,7 @@ function LoginComponent() {
                 </div>
                 <div className="form-group form_container">
                     <div className="icons">
-                        <i onClick={showPass}><FontAwesomeIcon icon={faEye}/></i>
+                        <i onClick={showPass}><FontAwesomeIcon icon={icon}/></i>
                     </div>
                     <input ref={showPasswRef} id="pass" className="form-control m-0" type="password" placeholder="Mot de passe"
                         value={password}
