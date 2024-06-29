@@ -4,7 +4,7 @@ import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import "./ConnexionMenuPage.css";
 import {login} from "../../APIs/fetchAuth.ts";
 import {User} from "../../models/User.ts";
-import {useUser} from "../../Providers/UserProvider.tsx";
+import {useUser} from "../../Context/UserContext.tsx";
 import { useNavigate } from "react-router-dom";
 
 function LoginComponent() {

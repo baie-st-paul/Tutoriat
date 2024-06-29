@@ -4,8 +4,7 @@ import {User} from "../models/User.ts";
 const controllerName:string = "auth/";
 
 export async function login(email:string, password:string):Promise<User> {
-    console.log(getApiUrl(`${controllerName}login`))
-    await fetch(
+    return await fetch(
         getApiUrl(`${controllerName}login`),
     {
         method: "POST",
@@ -17,8 +16,8 @@ export async function login(email:string, password:string):Promise<User> {
     ).catch((error) => {
 
         console.error("Error:", error);
-    }).then(async (response:Response) => {
-        if (response.status === 404){
+    }).then(async (response: Response) => {
+        if (response.status === 404) {
             return Promise.reject("User not found");
         }
         const data = await response.json();
