@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faEyeSlash, IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import "./ConnexionMenuPage.css";
 import {login} from "../../APIs/fetchAuth.ts";
 import {User} from "../../models/User.ts";
@@ -10,9 +10,9 @@ import { useNavigate } from "react-router-dom";
 function LoginComponent() {
     const { loggedInUser, setLoggedInUser } = useUser();
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [icon, setIcon] = useState(faEye);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [icon, setIcon] = useState<IconDefinition>(faEye);
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
@@ -20,7 +20,7 @@ function LoginComponent() {
     const errorRef = useRef(null);
 
     const validEmail = email.match(/^([\w.%+-]+)@([\w-]+\.)+(\w{2,})$/i);
-  //  const validPassword = password.match('^(?=.*[A-Z])(?=.*[@#$%^&+=!])(.{6,20})$');
+    const validPassword = password.match('^(?=.*[A-Z])(?=.*[@#$%^&+=!])(.{6,20})$');
 
     function showPass(){
         if (showPasswRef.current.type === "password") {
@@ -55,10 +55,10 @@ function LoginComponent() {
             passwordRef.current.innerText = "";
         }
 
-       // if (password.trim()!=='' && !validPassword) {
-       //     passwordRef.current.innerText = "* Mot de passe invalide";
-       //     allGood = false;
-       // }
+        if (password.trim()!=='' && !validPassword) {
+            passwordRef.current.innerText = "* Mot de passe invalide";
+            allGood = false;
+        }
 
         if (allGood) {
             login(email, password)
@@ -67,7 +67,7 @@ function LoginComponent() {
                     navigate("/home");
                 }).catch((error) => {
                     console.error("Error:", error);
-                    errorRef.current.innerText = "Email ou mot de passe incorrect";
+                    errorRef.current.innerText = "* Email ou mot de passe incorrect";
                 });
         }
     }
