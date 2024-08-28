@@ -26,21 +26,10 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
-
+        var user = new User(request.getEmail(), request.getFirstName(), request.getLastName(), passwordEncoder.encode(request.getEmail()));
         userService.save(user);
         var jwt = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .token(jwt)
-                .build();
+        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), jwt);
     }
 
     public JwtAuthenticationResponse login(LoginRequest request) {
@@ -49,12 +38,7 @@ public class AuthenticationService {
         UserDetails userDetails = userService.userDetailsService().loadUserByUsername(request.getEmail());
         var jwt = jwtService.generateToken(userDetails);
         User user = userService.findByEmail(request.getEmail());
-        return JwtAuthenticationResponse.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .token(jwt)
-                .build();
+        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), jwt);
     }
 
     public boolean existsByEmail(String email){
