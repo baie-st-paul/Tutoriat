@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class AuthenticationService {
     private final UserService userService;
@@ -25,7 +27,17 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public JwtAuthenticationResponse register(RegisterRequest request) {
+    public JwtAuthenticationResponse registerTeacher(RegisterRequest request, Collection<String> subjects) {
+        var user = new User(request.getEmail(), request.getFirstName(), request.getLastName(), passwordEncoder.encode(request.getEmail()));
+        userService.save(user);
+        return generateAuthResponse(request);
+    }
+
+    public JwtAuthenticationResponse registerStudent(RegisterRequest request) {
+        return generateAuthResponse(request);
+    }
+
+    private JwtAuthenticationResponse generateAuthResponse(RegisterRequest request) {
         var user = new User(request.getEmail(), request.getFirstName(), request.getLastName(), passwordEncoder.encode(request.getEmail()));
         userService.save(user);
         var jwt = jwtService.generateToken(user);

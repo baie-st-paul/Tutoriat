@@ -19,6 +19,7 @@ public class UserService {
 
     public void save(User user) {
         if (userRepository.existsByEmail(user.getEmail())) throw new IllegalArgumentException("Email already exists");
+
         userRepository.save(user);
     }
 
@@ -28,5 +29,9 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public String getUserType(String email) {
+        return userRepository.findByEmail(email).getClass().getSimpleName();
     }
 }

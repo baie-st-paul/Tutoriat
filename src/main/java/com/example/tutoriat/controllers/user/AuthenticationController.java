@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -16,10 +17,25 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping(value = "/register")
-    public ResponseEntity<JwtAuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
+    @PostMapping(value = "/registerTeacher")
+    public ResponseEntity<JwtAuthenticationResponse> registerTeacher(
+            @Valid @RequestBody RegisterRequest request,
+            @RequestParam(value = "subjects") Collection<String> subjects
+    ) {
         try {
-            return ResponseEntity.ok(authenticationService.register(request));
+            return ResponseEntity.ok(authenticationService.registerTeacher(request, subjects));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(value = "/registerStudent")
+    public ResponseEntity<JwtAuthenticationResponse> registerStudent(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+        try {
+            return ResponseEntity.ok(authenticationService.registerStudent(request));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().build();
