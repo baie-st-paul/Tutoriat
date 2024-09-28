@@ -17,7 +17,7 @@ CREATE TABLE students (
 );
 
 CREATE TABLE teaching_subjects (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     teacher_email VARCHAR(255) REFERENCES teachers(email)
 );
