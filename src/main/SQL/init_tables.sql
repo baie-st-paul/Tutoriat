@@ -16,7 +16,8 @@ CREATE TABLE students (
     email VARCHAR(255) PRIMARY KEY REFERENCES users(email)
 );
 
-CREATE TABLE subjects (
+CREATE TABLE teaching_subjects (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    teacher_email VARCHAR(255) REFERENCES teachers(email)
 );
