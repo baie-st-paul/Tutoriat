@@ -2,6 +2,7 @@ package com.example.tutoriat.models.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +11,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "teaching_subjects")
 public class TeachingSubject {
     @Id
     private Long id;
     private String name;
-
 
     public TeachingSubject(String name) {
         this.name = name;

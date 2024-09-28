@@ -2,6 +2,7 @@ package com.example.tutoriat.models.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "teachers")
 public class Teacher extends User {
 
     @OneToMany
