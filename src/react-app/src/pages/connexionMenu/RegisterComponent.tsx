@@ -1,12 +1,20 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash, IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {User} from "../../models/User.ts";
 import {useUser} from "../../Context/UserContext.tsx";
 import {useNavigate} from "react-router-dom";
 import {existByEmail, register} from "../../APIs/fetchAuth.ts";
+import $ from 'jquery';
+import TeachersSubjectComponent from "./TeachersSubjectComponent.tsx";
 
-function RegisterComponent(props) {
+enum UserClassSelection {
+    STUDENT,
+    TEACHER,
+    NONE
+}
+
+function RegisterComponent() {
     const { loggedInUser, setLoggedInUser } = useUser();
     const navigate = useNavigate();
     const [firstname, setFirstname] = useState<string>("")
@@ -16,6 +24,8 @@ function RegisterComponent(props) {
     const [passwordConfirm, setPasswordConfirm] = useState<string>("")
     const [passwordShowIcon, setPasswordShowIcon] = useState<IconDefinition>(faEye)
     const [passwordConfirmShowIcon, setPasswordConfirmShowIcon] = useState<IconDefinition>(faEye)
+    const [userClass, setUserClass] = useState<UserClassSelection>(UserClassSelection.NONE)
+    const [subject, setSubject] = useState<Array<string>>([])
 
     const emailRef = useRef(null)
     const firstnameRef = useRef(null)
@@ -30,6 +40,11 @@ function RegisterComponent(props) {
     const validPassword = password.match('^(?=.*[A-Z])(?=.*[@#$%^&+=!])(.{6,20})$')
     const validFirstname = firstname.match('^[a-zA-Z]+$')
     const validLastname = lastname.match('^[a-zA-Z]+$')
+
+    useEffect(() => {
+            $("#btn_user_class_student").addClass("btn-outline-success")
+            $("#btn_user_class_teacher").addClass("btn-outline-success")
+        },[])
 
     function showPass(){
         if (showPasswRef.current.type === "password") {
@@ -171,6 +186,42 @@ function RegisterComponent(props) {
                            onChange={e => setPasswordConfirm(e.target.value)}/>
                     <p ref={passwordConfirmRef} className="px-1 text-danger"></p>
                 </div>
+                <div className="justify-content-center d-flex">
+                    <button id="btn_user_class_student" type="button" className="btn btn_user_class mx-3"
+                    onClick={() => {
+                        setUserClass(UserClassSelection.STUDENT)
+                        const btn_user_class_student = $("#btn_user_class_student")
+                        const btn_user_class_teacher = $("#btn_user_class_teacher")
+                        if (btn_user_class_student.hasClass("btn-outline-success")){
+                            btn_user_class_student.removeClass("btn-outline-success")
+                            btn_user_class_student.addClass("btn-success")
+                        }
+                        if (btn_user_class_teacher.hasClass("btn-success")){
+                            btn_user_class_teacher.removeClass("btn-success")
+                            btn_user_class_teacher.addClass("btn-outline-success")
+                        }
+                    }}
+                     >Student</button>
+                    <button id="btn_user_class_teacher" type="button" className="btn btn_user_class mx-3"
+                    onClick={() => {
+                        setUserClass(UserClassSelection.TEACHER)
+                        const btn_user_class_student = $("#btn_user_class_student")
+                        const btn_user_class_teacher = $("#btn_user_class_teacher")
+                        if (btn_user_class_teacher.hasClass("btn-outline-success")){
+                            btn_user_class_teacher.removeClass("btn-outline-success")
+                            btn_user_class_teacher.addClass("btn-success")
+                        }
+                        if (btn_user_class_student.hasClass("btn-success")){
+                            btn_user_class_student.removeClass("btn-success")
+                            btn_user_class_student.addClass("btn-outline-success")
+                        }
+                    }}
+                    >Teacher</button>
+                </div>
+                { userClass === UserClassSelection.TEACHER &&
+                    <TeachersSubjectComponent subjects={subject} setSubjects={setSubject}/>
+                }
+
                 <p ref={errorRef} className="px-1 text-danger"></p>
                 <input type="submit" value="S'inscrire" className="btn btn-lg btn-outline-primary "/>
             </form>

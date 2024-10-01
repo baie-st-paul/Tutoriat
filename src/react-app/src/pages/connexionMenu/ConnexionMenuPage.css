@@ -31,3 +31,12 @@ input[type="submit"] {
     cursor: pointer;
     width: 100%;
 }
+
+.btn_user_class {
+    padding: 1rem 3rem;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 2rem;
+}
