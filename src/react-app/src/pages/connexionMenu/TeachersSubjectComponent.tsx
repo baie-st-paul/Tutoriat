@@ -1,6 +1,6 @@
 import React, {SetStateAction} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faX} from "@fortawesome/free-solid-svg-icons";
 
 export type Props = {
     subjects: Array<string>
@@ -28,12 +28,12 @@ function TeachersSubjectComponent(props: Props) {
                 {
                     props.subjects.map((s, index) => {
                         return (
-                            <div key={index} className="d-flex justify-content-between">
-                                <div>{s}</div>
+                            <div key={index} className="list_cases d-flex justify-content-between">
+                                <div >{s}</div>
                                 <div>
                                     <i onClick={() => {
                                         props.setSubjects(props.subjects.filter((_, i) => i !== index));
-                                    }}>X</i>
+                                    }}><FontAwesomeIcon className="text-danger" icon={faX}/></i>
                                 </div>
                             </div>
                         );
