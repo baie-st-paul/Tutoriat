@@ -36,8 +36,8 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse registerTeacher(RegisterRequest request, Collection<String> subjects) {
-        var teacher = new Teacher(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName(), subjects);
-        teacherService.save(teacher);
+        var teacher = new Teacher(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName());
+        teacherService.save(teacher, subjects);
         return generateAuthResponse(teacher);
     }
 

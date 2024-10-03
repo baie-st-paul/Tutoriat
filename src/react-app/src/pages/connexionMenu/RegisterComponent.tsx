@@ -4,7 +4,7 @@ import {faEye, faEyeSlash, IconDefinition} from "@fortawesome/free-solid-svg-ico
 import {User} from "../../models/User.ts";
 import {useUser} from "../../Context/UserContext.tsx";
 import {useNavigate} from "react-router-dom";
-import {existByEmail, register} from "../../APIs/fetchAuth.ts";
+import {existByEmail, registerTeacher, registerStudent} from "../../APIs/fetchAuth.ts";
 import $ from 'jquery';
 import TeachersSubjectComponent from "./TeachersSubjectComponent.tsx";
 
@@ -123,6 +123,11 @@ function RegisterComponent() {
             allGood = false;
         }
 
+        if (userClass === UserClassSelection.NONE) {
+            errorRef.current.innerText = "* Veuillez choisir un type de compte";
+            allGood = false;
+        }
+
         await existByEmail(email)
             .then((exist: boolean) => {
                 if (exist) {
@@ -135,14 +140,26 @@ function RegisterComponent() {
             });
 
         if (allGood) {
-            register(firstname, lastname, email, password)
-                .then((user: User) => {
-                    setLoggedInUser(user);
-                    navigate("/home");
-                }).catch((error) => {
-                console.error("Error:", error);
-                errorRef.current.innerText = "* Erreur d'inscription";
-            });
+            if (userClass === UserClassSelection.STUDENT) {
+                registerStudent(firstname, lastname, email, password)
+                    .then((user: User) => {
+                        setLoggedInUser(user);
+                        navigate("/home");
+                    }).catch((error) => {
+                    console.error("Error:", error);
+                    errorRef.current.innerText = "* Erreur d'inscription";
+                });
+            }
+            if (userClass === UserClassSelection.TEACHER) {
+                registerTeacher(firstname, lastname, email, password, subject)
+                    .then((user: User) => {
+                        setLoggedInUser(user);
+                        navigate("/home");
+                    }).catch((error) => {
+                    console.error("Error:", error);
+                    errorRef.current.innerText = "* Erreur d'inscription";
+                });
+            }
         }
     }
 

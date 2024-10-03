@@ -4,11 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @Table(name = "teachers")
 @PrimaryKeyJoinColumn(name = "email")
 public class Teacher extends User {
+
     @OneToMany(mappedBy = "teacher")
     private Set<TeachingSubject> subjects;
 
-    public Teacher(String email, String password, String firstName, String lastName, Collection<String> subjects) {
+    public Teacher(String email, String password, String firstName, String lastName) {
         super(email, password, firstName, lastName);
-        this.subjects = subjects.stream().map(TeachingSubject::new).collect(Collectors.toSet());
     }
 
 }
