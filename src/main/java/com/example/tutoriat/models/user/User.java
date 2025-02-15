@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Getter
-@Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
@@ -25,12 +24,14 @@ public abstract class User implements UserDetails {
 
     protected String firstName;
     protected String lastName;
+    protected UserType userType;
 
-    public User(String email, String password, String firstName, String lastName) {
+    public User(String email, String password, String firstName, String lastName, UserType userType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userType = userType;
     }
 
     @Override

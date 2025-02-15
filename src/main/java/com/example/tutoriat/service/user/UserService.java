@@ -17,11 +17,6 @@ public class UserService {
         return userRepository::findByEmail;
     }
 
-    public void save(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) throw new IllegalArgumentException("Email already exists");
-        userRepository.save(user);
-    }
-
     public boolean existsByEmail(String email){
         return userRepository.existsByEmail(email);
     }
@@ -31,6 +26,6 @@ public class UserService {
     }
 
     public String getUserType(String email) {
-        return userRepository.findByEmail(email).getClass().getSimpleName();
+        return userRepository.findByEmail(email).getUserType().name();
     }
 }

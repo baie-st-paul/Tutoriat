@@ -6,6 +6,7 @@ import com.example.tutoriat.DTO.authentication.RegisterRequest;
 import com.example.tutoriat.models.user.Student;
 import com.example.tutoriat.models.user.Teacher;
 import com.example.tutoriat.models.user.User;
+import com.example.tutoriat.models.user.UserType;
 import com.example.tutoriat.service.user.StudentService;
 import com.example.tutoriat.service.user.TeacherService;
 import com.example.tutoriat.service.user.UserService;
@@ -36,20 +37,20 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse registerTeacher(RegisterRequest request, Collection<String> subjects) {
-        var teacher = new Teacher(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName());
+        var teacher = new Teacher(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName(), UserType.TEACHER);
         teacherService.save(teacher, subjects);
         return generateAuthResponse(teacher);
     }
 
     public JwtAuthenticationResponse registerStudent(RegisterRequest request) {
-        var student = new Student(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName());
+        var student = new Student(request.email(), passwordEncoder.encode(request.email()), request.firstName(), request.lastName(), UserType.STUDENT);
         studentService.save(student);
         return generateAuthResponse(student);
     }
 
     private JwtAuthenticationResponse generateAuthResponse(User user) {
         var jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), jwt);
+        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserType().toString(), jwt);
     }
 
     public JwtAuthenticationResponse login(LoginRequest request) {
@@ -58,7 +59,7 @@ public class AuthenticationService {
         UserDetails userDetails = userService.userDetailsService().loadUserByUsername(request.email());
         var jwt = jwtService.generateToken(userDetails);
         User user = userService.findByEmail(request.email());
-        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), jwt);
+        return new JwtAuthenticationResponse(user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserType().toString(), jwt);
     }
 
     public boolean existsByEmail(String email){

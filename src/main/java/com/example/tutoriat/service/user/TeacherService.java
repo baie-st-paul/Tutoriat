@@ -1,5 +1,6 @@
 package com.example.tutoriat.service.user;
 
+import com.example.tutoriat.DTO.user.TeacherSimpleDTO;
 import com.example.tutoriat.models.user.Teacher;
 import com.example.tutoriat.models.user.TeachingSubject;
 import com.example.tutoriat.repository.user.SubjectRepository;
@@ -7,6 +8,7 @@ import com.example.tutoriat.repository.user.TeacherRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,5 +28,9 @@ public class TeacherService {
         if(userService.existsByEmail(teacher.getEmail())) throw new IllegalArgumentException("Email already exists");
         Teacher returnedTeacherValue = teacherRepository.saveAndFlush(teacher);
         subjectRepository.saveAll(subjects.stream().map(subject -> new TeachingSubject(subject, returnedTeacherValue)).collect(Collectors.toSet()));
+    }
+
+    public Set<TeacherSimpleDTO> getTeachers() {
+        return teacherRepository.findAll().stream().map(TeacherSimpleDTO::fromUser).collect(Collectors.toSet());
     }
 }
